@@ -3,7 +3,7 @@
 Jellyfin can install this plugin from a plugin repository URL after you publish:
 
 - `manifest.json` in the GitHub repository
-- `JellyseerrBridge_0.1.0.5.zip` as a GitHub release asset
+- `JellyseerrBridge_0.2.0.0.zip` as a GitHub release asset
 
 ## User Install Steps
 
@@ -29,26 +29,28 @@ After the repository is published, users install it like this:
 Build the release zip:
 
 ```bash
-./scripts/package-release.sh 0.1.0.5
+./scripts/package-release.sh 0.2.0.0
 ```
 
 Create a GitHub release:
 
 ```text
-v0.1.5
+v0.2.0
 ```
 
 Upload:
 
 ```text
-dist/JellyseerrBridge_0.1.0.5.zip
+dist/JellyseerrBridge_0.2.0.0.zip
 ```
 
 Generate `manifest.json`:
 
 ```bash
-./scripts/generate-manifest.sh monjaka jellyfin-plugin-jellyseerr-bridge 0.1.0.5 v0.1.5 dist/JellyseerrBridge_0.1.0.5.zip > manifest.json
+./scripts/generate-manifest.sh monjaka jellyfin-plugin-jellyseerr-bridge 0.2.0.0 v0.2.0 dist/JellyseerrBridge_0.2.0.0.zip > manifest.new.json
 ```
+
+Merge the new version block from `manifest.new.json` into the top of the `versions` array in `manifest.json`, keeping the existing `0.1.0.5` entry for Jellyfin 10.11.x servers.
 
 Commit and push:
 

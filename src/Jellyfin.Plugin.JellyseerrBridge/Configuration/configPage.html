@@ -14,13 +14,20 @@
           </div>
 
           <div class="inputContainer">
-            <input is="emby-input" id="JellyseerrBaseUrl" label="Jellyseerr Base URL" placeholder="http://192.168.9.10:5055">
-            <div class="fieldDescription">The internal Jellyseerr URL reachable from the Jellyfin server.</div>
+            <input is="emby-input" id="JellyseerrBaseUrl" label="Jellyseerr Base URL" placeholder="http://jellyseerr:5055">
+            <div class="fieldDescription">The address the Jellyfin server uses to reach Jellyseerr, including the port. If Jellyfin runs in Docker, don't use localhost: inside the container it means Jellyfin itself. Use the Jellyseerr container name (for example http://jellyseerr:5055) or the server's LAN IP.</div>
           </div>
 
           <div class="inputContainer">
-            <input is="emby-input" id="JellyseerrApiKey" type="password" label="Jellyseerr API Key" autocomplete="off">
-            <div class="fieldDescription">Stored server-side by Jellyfin. It is not sent to browsers by plugin endpoints.</div>
+            <input is="emby-input" id="JellyseerrApiKey" type="password" label="Jellyseerr API Key" autocomplete="new-password">
+            <div class="fieldDescription" id="JellyseerrApiKeyDescription">Stored on the Jellyfin server and only used there. Once saved, it isn't shown again: leave this blank to keep the saved key, or type a new one to replace it.</div>
+          </div>
+
+          <div class="inputContainer">
+            <button is="emby-button" type="button" id="TestConnection" class="raised block">
+              <span>Test Connection</span>
+            </button>
+            <div id="TestConnectionResult" class="fieldDescription" role="status" aria-live="polite"></div>
           </div>
 
           <label class="checkboxContainer">
@@ -30,13 +37,25 @@
           <div class="fieldDescription checkboxFieldDescription">Leave disabled until you have tested search and configured Jellyseerr.</div>
 
           <label class="checkboxContainer">
+            <input is="emby-checkbox" type="checkbox" id="AutoApproveRequests">
+            <span>Approve every request automatically</span>
+          </label>
+          <div class="fieldDescription checkboxFieldDescription">Requests from any user go straight to Radarr or Sonarr, even if their Jellyseerr account would normally wait for an admin. Request limits set in Jellyseerr still apply.</div>
+
+          <label class="checkboxContainer">
             <input is="emby-checkbox" type="checkbox" id="Enable4KRequests">
             <span>Enable 4K requests</span>
           </label>
 
+          <label class="checkboxContainer">
+            <input is="emby-checkbox" type="checkbox" id="AutoAddUsersToJellyseerr">
+            <span>Add Jellyfin users to Jellyseerr automatically</span>
+          </label>
+          <div class="fieldDescription checkboxFieldDescription">When someone without a Jellyseerr account makes their first request, import them from Jellyfin with Jellyseerr's default permissions. Turn this off to choose who gets an account yourself, in Jellyseerr under Users, Import Jellyfin Users.</div>
+
           <div class="inputContainer">
             <textarea is="emby-textarea" id="AllowedUserIds" label="Allowed Jellyfin User IDs"></textarea>
-            <div class="fieldDescription">Optional. One Jellyfin user ID per line. Empty allows any authenticated Jellyfin user to submit requests.</div>
+            <div class="fieldDescription">Optional. One Jellyfin user ID per line. Only these users can request titles or report problems. Leave empty to allow every signed-in Jellyfin user.</div>
           </div>
 
           <div>
@@ -57,12 +76,72 @@
           Dashboard.showLoadingMsg();
           ApiClient.getPluginConfiguration(pluginId).then((config) => {
             page.querySelector("#JellyseerrBaseUrl").value = config.JellyseerrBaseUrl || "";
-            page.querySelector("#JellyseerrApiKey").value = config.JellyseerrApiKey || "";
+            // The saved key is never put back in the form, so it can't be read off the screen
+            // or picked up by a password manager.
+            const keyInput = page.querySelector("#JellyseerrApiKey");
+            keyInput.value = "";
+            keyInput.placeholder = config.JellyseerrApiKey ? "Saved. Leave blank to keep it." : "";
+            page.querySelector("#AutoAddUsersToJellyseerr").checked = config.AutoAddUsersToJellyseerr !== false;
             page.querySelector("#EnableRequestSubmission").checked = !!config.EnableRequestSubmission;
             page.querySelector("#Enable4KRequests").checked = !!config.Enable4KRequests;
+            page.querySelector("#AutoApproveRequests").checked = !!config.AutoApproveRequests;
             page.querySelector("#AllowedUserIds").value = (config.AllowedUserIds || []).join("\n");
             Dashboard.hideLoadingMsg();
           });
+        });
+
+        // Tests whatever is typed in the form right now, so you can check it before saving.
+        // Note: Jellyfin Web treats anything written like a JS template placeholder in this
+        // page as a translation key and replaces it, so this script sticks to plain "+" joins.
+        const testButton = page.querySelector("#TestConnection");
+        const testResult = page.querySelector("#TestConnectionResult");
+
+        function showTestResult(message, color, warnings) {
+          testResult.textContent = "";
+          const line = document.createElement("div");
+          line.textContent = message;
+          line.style.color = color;
+          testResult.appendChild(line);
+
+          if (warnings && warnings.length) {
+            const list = document.createElement("ul");
+            list.style.margin = ".4em 0 0";
+            list.style.paddingLeft = "1.2em";
+            list.style.color = "#e5a00d";
+            warnings.forEach((warning) => {
+              const item = document.createElement("li");
+              item.textContent = warning;
+              list.appendChild(item);
+            });
+            testResult.appendChild(list);
+          }
+        }
+
+        testButton.addEventListener("click", async () => {
+          testButton.disabled = true;
+          showTestResult("Testing...", "");
+          try {
+            const response = await fetch(ApiClient.getUrl("JellyseerrBridge/TestConnection"), {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": "MediaBrowser Token=\"" + ApiClient.accessToken() + "\""
+              },
+              body: JSON.stringify({
+                baseUrl: page.querySelector("#JellyseerrBaseUrl").value.trim(),
+                apiKey: page.querySelector("#JellyseerrApiKey").value.trim()
+              })
+            });
+            if (!response.ok) {
+              throw new Error("Jellyfin answered with HTTP " + response.status + ". Is the plugin updated and Jellyfin restarted?");
+            }
+            const result = await response.json();
+            showTestResult(result.message, result.success ? "#52b54b" : "#cc3333", result.warnings);
+          } catch (error) {
+            showTestResult(error.message, "#cc3333");
+          } finally {
+            testButton.disabled = false;
+          }
         });
 
         form.addEventListener("submit", (event) => {
@@ -70,15 +149,25 @@
           Dashboard.showLoadingMsg();
           ApiClient.getPluginConfiguration(pluginId).then((config) => {
             config.JellyseerrBaseUrl = page.querySelector("#JellyseerrBaseUrl").value.trim();
-            config.JellyseerrApiKey = page.querySelector("#JellyseerrApiKey").value.trim();
+            const newKey = page.querySelector("#JellyseerrApiKey").value.trim();
+            if (newKey) {
+              config.JellyseerrApiKey = newKey;
+            }
+            config.AutoAddUsersToJellyseerr = page.querySelector("#AutoAddUsersToJellyseerr").checked;
             config.EnableRequestSubmission = page.querySelector("#EnableRequestSubmission").checked;
             config.Enable4KRequests = page.querySelector("#Enable4KRequests").checked;
+            config.AutoApproveRequests = page.querySelector("#AutoApproveRequests").checked;
             config.AllowedUserIds = page.querySelector("#AllowedUserIds").value
               .split(/\r?\n/)
               .map((value) => value.trim())
               .filter(Boolean);
             return ApiClient.updatePluginConfiguration(pluginId, config);
           }).then(() => {
+            const keyInput = page.querySelector("#JellyseerrApiKey");
+            if (keyInput.value.trim()) {
+              keyInput.value = "";
+              keyInput.placeholder = "Saved. Leave blank to keep it.";
+            }
             Dashboard.processPluginConfigurationUpdateResult();
           });
           return false;

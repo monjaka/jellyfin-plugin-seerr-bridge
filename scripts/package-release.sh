@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-version="${1:-0.1.0.5}"
-framework="${2:-net9.0}"
+version="${1:-0.2.0.0}"
+framework="${2:-net10.0}"
 project="src/Jellyfin.Plugin.JellyseerrBridge/Jellyfin.Plugin.JellyseerrBridge.csproj"
 build_dir="src/Jellyfin.Plugin.JellyseerrBridge/bin/Release/${framework}"
 dist_dir="dist"

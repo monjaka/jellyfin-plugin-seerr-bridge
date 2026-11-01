@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -19,12 +20,6 @@ public sealed class BridgeStatus
     /// </summary>
     [JsonPropertyName("requestSubmissionEnabled")]
     public bool RequestSubmissionEnabled { get; set; }
-
-    /// <summary>
-    /// Gets or sets the configured Jellyseerr base URL host.
-    /// </summary>
-    [JsonPropertyName("jellyseerrHost")]
-    public string? JellyseerrHost { get; set; }
 }
 
 /// <summary>
@@ -55,32 +50,80 @@ public sealed class BridgeRequest
 }
 
 /// <summary>
-/// Sanitized Jellyseerr service defaults.
+/// The Jellyseerr URL and API key to test from the settings page.
 /// </summary>
-public sealed class ServiceDefaults
+public sealed class ConnectionTestRequest
 {
     /// <summary>
-    /// Gets or sets the service ID.
+    /// Gets or sets the Jellyseerr base URL. Blank means use the saved one.
     /// </summary>
-    public int? ServerId { get; set; }
+    [JsonPropertyName("baseUrl")]
+    public string? BaseUrl { get; set; }
 
     /// <summary>
-    /// Gets or sets the quality profile ID.
+    /// Gets or sets the Jellyseerr API key. Blank means use the saved one.
     /// </summary>
-    public int? ProfileId { get; set; }
+    [JsonPropertyName("apiKey")]
+    public string? ApiKey { get; set; }
+}
+
+/// <summary>
+/// The outcome of a connection test.
+/// </summary>
+public sealed class ConnectionTestResult
+{
+    /// <summary>
+    /// Gets or sets a value indicating whether Jellyseerr was reached and accepted the API key.
+    /// </summary>
+    [JsonPropertyName("success")]
+    public bool Success { get; set; }
 
     /// <summary>
-    /// Gets or sets the root folder.
+    /// Gets or sets the message to show the administrator.
     /// </summary>
-    public string? RootFolder { get; set; }
+    [JsonPropertyName("message")]
+    public string Message { get; set; } = string.Empty;
 
     /// <summary>
-    /// Gets or sets tags.
+    /// Gets or sets setup problems found in Jellyseerr that don't stop the connection
+    /// working, such as Enable Scan being off for a Radarr or Sonarr server.
     /// </summary>
-    public JsonElement? Tags { get; set; }
+    [JsonPropertyName("warnings")]
+    public IReadOnlyList<string> Warnings { get; set; } = [];
+}
+
+/// <summary>
+/// A problem report for a title in the library.
+/// </summary>
+public sealed class BridgeIssue
+{
+    /// <summary>
+    /// Gets or sets Jellyseerr's own media ID for the title (mediaInfo.id), not the TMDB ID.
+    /// </summary>
+    [JsonPropertyName("mediaInfoId")]
+    public int MediaInfoId { get; set; }
 
     /// <summary>
-    /// Gets or sets the language profile ID.
+    /// Gets or sets the kind of problem: 1 video, 2 audio, 3 subtitles, 4 other.
     /// </summary>
-    public int? LanguageProfileId { get; set; }
+    [JsonPropertyName("issueType")]
+    public int IssueType { get; set; }
+
+    /// <summary>
+    /// Gets or sets the description of the problem.
+    /// </summary>
+    [JsonPropertyName("message")]
+    public string? Message { get; set; }
+
+    /// <summary>
+    /// Gets or sets the season with the problem. 0 means all seasons, or a movie.
+    /// </summary>
+    [JsonPropertyName("problemSeason")]
+    public int ProblemSeason { get; set; }
+
+    /// <summary>
+    /// Gets or sets the episode with the problem. 0 means all episodes, or a movie.
+    /// </summary>
+    [JsonPropertyName("problemEpisode")]
+    public int ProblemEpisode { get; set; }
 }

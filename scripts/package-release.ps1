@@ -1,6 +1,6 @@
 param(
-    [string]$Version = "0.1.0.5",
-    [string]$Framework = "net9.0"
+    [string]$Version = "0.2.0.0",
+    [string]$Framework = "net10.0"
 )
 
 $ErrorActionPreference = "Stop"

@@ -8,6 +8,17 @@
     "category": "General",
     "versions": [
       {
+        "version": "0.2.0.0",
+        "changelog": "Adds support for Jellyfin 12.x (.NET 10). Use 0.1.0.5 for Jellyfin 10.11.x.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/monjaka/jellyfin-plugin-jellyseerr-bridge/releases/download/v0.2.0/JellyseerrBridge_0.2.0.0.zip",
+        "checksum": "REPLACE_WITH_RELEASE_ZIP_MD5",
+        "timestamp": "REPLACE_WITH_RELEASE_TIMESTAMP",
+        "repositoryName": "alternate.redirect Jellyfin Plugins",
+        "repositoryUrl": "https://raw.githubusercontent.com/monjaka/jellyfin-plugin-jellyseerr-bridge/main/manifest.json",
+        "url": "https://github.com/monjaka/jellyfin-plugin-jellyseerr-bridge/releases/download/v0.2.0/JellyseerrBridge_0.2.0.0.zip"
+      },
+      {
         "version": "0.1.0.5",
         "changelog": "Simplifies setup around the standard plugin install plus one web-loader installer command.",
         "targetAbi": "10.11.0.0",

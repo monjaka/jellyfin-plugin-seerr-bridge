@@ -1,0 +1,150 @@
+name: release
+
+# Runs when you push a version tag like v0.2.0. You can also start it by hand
+# from the Actions tab, which is handy for tags that already exist.
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing tag to build and release, for example v0.2.0"
+        required: true
+
+permissions:
+  contents: write
+
+env:
+  FRAMEWORK: net10.0
+  TARGET_ABI: "12.0.0.0"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Work out which tag we're releasing
+        id: tag
+        run: |
+          if [ -n "${{ github.event.inputs.tag }}" ]; then
+            echo "name=${{ github.event.inputs.tag }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "name=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.tag.outputs.name }}
+          fetch-depth: 0
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      # The plugin version lives in Directory.Build.props, so read it from there
+      # instead of guessing it from the tag.
+      - name: Read plugin version
+        id: version
+        run: |
+          version=$(grep -oP '(?<=<Version>)[^<]+' Directory.Build.props)
+          echo "Plugin version is $version"
+          echo "value=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Build
+        run: |
+          dotnet restore
+          dotnet build src/Jellyfin.Plugin.JellyseerrBridge/Jellyfin.Plugin.JellyseerrBridge.csproj -c Release --no-restore
+
+      - name: Package plugin zip
+        id: package
+        run: |
+          version="${{ steps.version.outputs.value }}"
+          name="JellyseerrBridge_${version}"
+          mkdir -p "dist/${name}"
+          cp -a "src/Jellyfin.Plugin.JellyseerrBridge/bin/Release/${FRAMEWORK}/." "dist/${name}/"
+          (cd dist && zip -r "${name}.zip" "${name}")
+          checksum=$(md5sum "dist/${name}.zip" | awk '{print $1}')
+          echo "Checksum: $checksum"
+          echo "zip=dist/${name}.zip" >> "$GITHUB_OUTPUT"
+          echo "file=${name}.zip" >> "$GITHUB_OUTPUT"
+          echo "checksum=$checksum" >> "$GITHUB_OUTPUT"
+
+      # If you already made the release by hand, this just adds the zip to it.
+      # Otherwise it creates the release first.
+      - name: Create release or upload to the existing one
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="${{ steps.tag.outputs.name }}"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release upload "$tag" "${{ steps.package.outputs.zip }}" --clobber
+          else
+            gh release create "$tag" "${{ steps.package.outputs.zip }}" --title "$tag" --generate-notes
+          fi
+
+      # Adds this version to the top of manifest.json on main, or replaces it if
+      # it's already listed. Older entries such as 0.1.0.5 for Jellyfin 10.11 are
+      # left alone so those servers keep working.
+      - name: Update manifest.json on main
+        env:
+          VERSION: ${{ steps.version.outputs.value }}
+          TAG: ${{ steps.tag.outputs.name }}
+          CHECKSUM: ${{ steps.package.outputs.checksum }}
+          ZIP_FILE: ${{ steps.package.outputs.file }}
+        run: |
+          git fetch origin main
+          git checkout main
+
+          python3 - <<'PY'
+          import json, os, re
+          from datetime import datetime, timezone
+
+          repo = os.environ["GITHUB_REPOSITORY"]
+          version = os.environ["VERSION"]
+          tag = os.environ["TAG"]
+          zip_url = f"https://github.com/{repo}/releases/download/{tag}/{os.environ['ZIP_FILE']}"
+
+          # Use the first paragraph under this version's heading in CHANGELOG.md
+          # as the manifest changelog, if there is one.
+          changelog = f"See the {tag} release notes."
+          try:
+              text = open("CHANGELOG.md", encoding="utf-8").read()
+              match = re.search(rf"^## {re.escape(version)}\s*\n+(.+?)(?:\n\n|\Z)", text, re.M | re.S)
+              if match:
+                  changelog = " ".join(match.group(1).split())
+          except FileNotFoundError:
+              pass
+
+          with open("manifest.json", encoding="utf-8") as f:
+              manifest = json.load(f)
+
+          plugin = manifest[0]
+          plugin["owner"] = repo.split("/")[0]
+          entry = {
+              "version": version,
+              "changelog": changelog,
+              "targetAbi": os.environ["TARGET_ABI"],
+              "sourceUrl": zip_url,
+              "checksum": os.environ["CHECKSUM"],
+              "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+              "repositoryName": "Jellyseerr Bridge",
+              "repositoryUrl": f"https://raw.githubusercontent.com/{repo}/main/manifest.json",
+              "url": zip_url,
+          }
+          others = [v for v in plugin["versions"] if v.get("version") != version]
+          plugin["versions"] = [entry] + others
+
+          with open("manifest.json", "w", encoding="utf-8") as f:
+              json.dump(manifest, f, indent=2)
+              f.write("\n")
+          PY
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add manifest.json
+          if git diff --cached --quiet; then
+            echo "manifest.json already up to date"
+          else
+            git commit -m "Update manifest for ${VERSION}"
+            git push origin main
+          fi

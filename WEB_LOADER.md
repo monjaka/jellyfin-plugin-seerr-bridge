@@ -1,21 +1,22 @@
 # Jellyfin Web Navigation Loader
 
-Jellyfin server plugins can serve backend APIs and plugin configuration pages. Jellyfin Web navigation requires adding a small loader tag to Jellyfin Web's `index.html`.
+Since version 0.2.4.0, the plugin adds its navigation script to Jellyfin Web by itself. It edits `index.html` as Jellyfin sends it to the browser, so the file on disk is never changed. That means it works on Docker installs, survives Jellyfin updates, and needs no extra plugins. After installing or updating the plugin, restart Jellyfin and hard refresh the browser.
 
-This repository provides installer and uninstaller scripts so users do not need to edit `index.html` by hand.
-
-This plugin serves a small entry script:
+The script it loads is served by the plugin at:
 
 ```text
 /JellyseerrBridge/Assets/request-entry.js
 ```
 
-When loaded by Jellyfin Web, it adds:
+In the Modern layout (the default in Jellyfin 12) it adds a Request tab beside Home and Favorites on the home page, and a Requests item in the user avatar menu on every page. In the Legacy layout it adds a Request tab beside Home and Favourites, plus a side-menu item.
 
-- a top `Request` tab beside Home and Favourites
-- a side-menu `Requests` item
+If a reverse proxy or CDN caches Jellyfin's `index.html`, purge that cache after installing the plugin, or the browser may keep getting the page without the script.
 
-## Recommended Install
+The sections below are only needed if the automatic loader doesn't work in your setup.
+
+## Manual Fallback: Index.html Installer Script
+
+
 
 Run this on the Jellyfin server after installing the Jellyseerr Bridge plugin:
 

@@ -1,23 +1,122 @@
 [
-    {
-        "name":  "Jellyseerr Bridge",
-        "owner":  "monjaka",
-        "description":  "A Jellyfin plugin that provides a Jellyseerr-powered request page with server-side API-key forwarding.",
-        "versions":  [
-                         {
-                             "url":  "https://github.com/monjaka/jellyfin-plugin-jellyseerr-bridge/releases/download/v0.1.5/JellyseerrBridge_0.1.0.5.zip",
-                             "checksum":  "eea7309b089ea102e54b31983418d104",
-                             "version":  "0.1.0.5",
-                             "repositoryUrl":  "https://raw.githubusercontent.com/monjaka/jellyfin-plugin-jellyseerr-bridge/main/manifest.json",
-                             "timestamp":  "2026-06-15T04:55:00Z",
-                             "sourceUrl":  "https://github.com/monjaka/jellyfin-plugin-jellyseerr-bridge/releases/download/v0.1.5/JellyseerrBridge_0.1.0.5.zip",
-                             "repositoryName":  "Jellyseerr Bridge",
-                             "targetAbi":  "10.11.0.0",
-                             "changelog":  "Simplifies setup around the standard plugin install plus one web-loader installer command."
-                         }
-                     ],
-        "category":  "General",
-        "overview":  "Search, discover, and request media from Jellyseerr inside Jellyfin.",
-        "guid":  "d2fcf9c8-c3c7-47e8-9dd6-8de9867e36bb"
-    }
+  {
+    "name": "Jellyseerr Bridge",
+    "owner": "kjkoeller",
+    "description": "A Jellyfin plugin that provides a Jellyseerr-powered request page with server-side API-key forwarding.",
+    "versions": [
+      {
+        "version": "0.3.3.0",
+        "changelog": "Optional automatic approval for every request.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/kjkoeller/jellyfin-plugin-seerr-bridge/releases/download/v0.3.3/JellyseerrBridge_0.3.3.0.zip",
+        "checksum": "19496a803e93c66980a7c20a2ccd8006",
+        "timestamp": "2026-11-01T19:17:31Z",
+        "repositoryName": "Jellyseerr Bridge",
+        "repositoryUrl": "https://raw.githubusercontent.com/kjkoeller/jellyfin-plugin-seerr-bridge/main/manifest.json",
+        "url": "https://github.com/kjkoeller/jellyfin-plugin-seerr-bridge/releases/download/v0.3.3/JellyseerrBridge_0.3.3.0.zip"
+      },
+      {
+        "version": "0.3.2.0",
+        "changelog": "Stops other users' details and admin-only information reaching the browser.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/kjkoeller/jellyfin-plugin-seerr-bridge/releases/download/v0.3.2/JellyseerrBridge_0.3.2.0.zip",
+        "checksum": "d27145d90094c7531efce5a1e52667cd",
+        "timestamp": "2026-11-01T16:25:55Z",
+        "repositoryName": "Jellyseerr Bridge",
+        "repositoryUrl": "https://raw.githubusercontent.com/kjkoeller/jellyfin-plugin-seerr-bridge/main/manifest.json",
+        "url": "https://github.com/kjkoeller/jellyfin-plugin-seerr-bridge/releases/download/v0.3.2/JellyseerrBridge_0.3.2.0.zip"
+      },
+      {
+        "version": "0.3.1.0",
+        "changelog": "Security hardening for admins and users. SECURITY.md describes everything the plugin now does.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/kjkoeller/jellyfin-plugin-seerr-bridge/releases/download/v0.3.1/JellyseerrBridge_0.3.1.0.zip",
+        "checksum": "eecffef9a05f8789eba1ecfc2b6ab582",
+        "timestamp": "2026-11-01T12:43:17Z",
+        "repositoryName": "Jellyseerr Bridge",
+        "repositoryUrl": "https://raw.githubusercontent.com/kjkoeller/jellyfin-plugin-seerr-bridge/main/manifest.json",
+        "url": "https://github.com/kjkoeller/jellyfin-plugin-seerr-bridge/releases/download/v0.3.1/JellyseerrBridge_0.3.1.0.zip"
+      },
+      {
+        "version": "0.3.0.0",
+        "changelog": "Requests now belong to the person who made them, with a My Requests tab, request limits and problem reports built on that.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/kjkoeller/jellyfin-plugin-seerr-bridge/releases/download/v0.3.0/JellyseerrBridge_0.3.0.0.zip",
+        "checksum": "e07ea5e8a6d044fbde529c2d1ca787ae",
+        "timestamp": "2026-11-01T12:29:09Z",
+        "repositoryName": "Jellyseerr Bridge",
+        "repositoryUrl": "https://raw.githubusercontent.com/kjkoeller/jellyfin-plugin-seerr-bridge/main/manifest.json",
+        "url": "https://github.com/kjkoeller/jellyfin-plugin-seerr-bridge/releases/download/v0.3.0/JellyseerrBridge_0.3.0.0.zip"
+      },
+      {
+        "version": "0.2.8.0",
+        "changelog": "Request missing seasons straight from a show's page in Jellyfin.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/kjkoeller/jellyfin-plugin-seerr-bridge/releases/download/v0.2.8/JellyseerrBridge_0.2.8.0.zip",
+        "checksum": "28f91b67c5b4e4f6e7728229dbd30060",
+        "timestamp": "2026-11-01T02:34:47Z",
+        "repositoryName": "Jellyseerr Bridge",
+        "repositoryUrl": "https://raw.githubusercontent.com/kjkoeller/jellyfin-plugin-seerr-bridge/main/manifest.json",
+        "url": "https://github.com/kjkoeller/jellyfin-plugin-seerr-bridge/releases/download/v0.2.8/JellyseerrBridge_0.2.8.0.zip"
+      },
+      {
+        "version": "0.2.4.0",
+        "changelog": "The plugin now adds the Request tab to Jellyfin Web by itself. No index.html edit or extra plugin is needed.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/kjkoeller/jellyfin-plugin-seerr-bridge/releases/download/v0.2.4/JellyseerrBridge_0.2.4.0.zip",
+        "checksum": "14e537bf3d101980ca3f6cdb75cd28e3",
+        "timestamp": "2026-10-31T17:27:25Z",
+        "repositoryName": "Jellyseerr Bridge",
+        "repositoryUrl": "https://raw.githubusercontent.com/kjkoeller/jellyfin-plugin-seerr-bridge/main/manifest.json",
+        "url": "https://github.com/kjkoeller/jellyfin-plugin-seerr-bridge/releases/download/v0.2.4/JellyseerrBridge_0.2.4.0.zip"
+      },
+      {
+        "version": "0.2.3.0",
+        "changelog": "Rebuild of 0.2.2.0 with the updated `request-entry.js`. The 0.2.2.0 package shipped the old script by mistake, so none of the 0.2.1.0 or 0.2.2.0 navigation changes below reached Jellyfin until this release.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/kjkoeller/jellyfin-plugin-seerr-bridge/releases/download/v0.2.3/JellyseerrBridge_0.2.3.0.zip",
+        "checksum": "a62f9b928ba0239ed3eed694f8576831",
+        "timestamp": "2026-10-31T00:20:07Z",
+        "repositoryName": "Jellyseerr Bridge",
+        "repositoryUrl": "https://raw.githubusercontent.com/kjkoeller/jellyfin-plugin-seerr-bridge/main/manifest.json",
+        "url": "https://github.com/kjkoeller/jellyfin-plugin-seerr-bridge/releases/download/v0.2.3/JellyseerrBridge_0.2.3.0.zip"
+      },
+      {
+        "version": "0.2.2.0",
+        "changelog": "See the v0.2.2 release notes.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/kjkoeller/jellyfin-plugin-seerr-bridge/releases/download/v0.2.2/JellyseerrBridge_0.2.2.0.zip",
+        "checksum": "ce3be5b0c96d43ade2683d8265a355b8",
+        "timestamp": "2026-10-30T23:16:16Z",
+        "repositoryName": "Jellyseerr Bridge",
+        "repositoryUrl": "https://raw.githubusercontent.com/kjkoeller/jellyfin-plugin-seerr-bridge/main/manifest.json",
+        "url": "https://github.com/kjkoeller/jellyfin-plugin-seerr-bridge/releases/download/v0.2.2/JellyseerrBridge_0.2.2.0.zip"
+      },
+      {
+        "version": "0.2.0.0",
+        "changelog": "Adds support for Jellyfin 12.x. This build does not load on Jellyfin 10.11.x; servers on 10.11.x should stay on 0.1.0.5, which remains in the plugin repository manifest.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/kjkoeller/jellyfin-plugin-seerr-bridge/releases/download/v0.2.0/JellyseerrBridge_0.2.0.0.zip",
+        "checksum": "0a53cc28b8f8fd0759e45f32a8fc4286",
+        "timestamp": "2026-10-30T13:41:38Z",
+        "repositoryName": "Jellyseerr Bridge",
+        "repositoryUrl": "https://raw.githubusercontent.com/kjkoeller/jellyfin-plugin-seerr-bridge/main/manifest.json",
+        "url": "https://github.com/kjkoeller/jellyfin-plugin-seerr-bridge/releases/download/v0.2.0/JellyseerrBridge_0.2.0.0.zip"
+      },
+      {
+        "url": "https://github.com/monjaka/jellyfin-plugin-jellyseerr-bridge/releases/download/v0.1.5/JellyseerrBridge_0.1.0.5.zip",
+        "checksum": "eea7309b089ea102e54b31983418d104",
+        "version": "0.1.0.5",
+        "repositoryUrl": "https://raw.githubusercontent.com/monjaka/jellyfin-plugin-jellyseerr-bridge/main/manifest.json",
+        "timestamp": "2026-06-15T04:55:00Z",
+        "sourceUrl": "https://github.com/monjaka/jellyfin-plugin-jellyseerr-bridge/releases/download/v0.1.5/JellyseerrBridge_0.1.0.5.zip",
+        "repositoryName": "Jellyseerr Bridge",
+        "targetAbi": "10.11.0.0",
+        "changelog": "Simplifies setup around the standard plugin install plus one web-loader installer command."
+      }
+    ],
+    "category": "General",
+    "overview": "Search, discover, and request media from Jellyseerr inside Jellyfin.",
+    "guid": "d2fcf9c8-c3c7-47e8-9dd6-8de9867e36bb"
+  }
 ]

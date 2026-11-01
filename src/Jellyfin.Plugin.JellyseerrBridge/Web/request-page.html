@@ -191,6 +191,8 @@
       gap: .55rem;
     }
     .card-actions {
+      display: grid;
+      gap: .45rem;
       padding: 0 .7rem .7rem;
     }
     .name {
@@ -299,6 +301,154 @@
     .series-summary {
       color: rgba(255,255,255,.72);
     }
+    .download-progress {
+      display: grid;
+      gap: .35rem;
+    }
+    .detail-progress {
+      max-width: 16rem;
+    }
+    .progress {
+      height: .4rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,.12);
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: inherit;
+      background: #00a4dc;
+      transition: width .6s ease;
+    }
+    .progress-fill.idle {
+      background: rgba(255,255,255,.4);
+    }
+    .progress-text {
+      font-size: .78rem;
+      color: rgba(255,255,255,.75);
+    }
+    .action.open {
+      background: #00a4dc;
+      color: #061018;
+    }
+    .ratings {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .45rem;
+    }
+    .rating {
+      display: inline-flex;
+      gap: .35rem;
+      align-items: baseline;
+      padding: .3rem .6rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,.1);
+      color: inherit;
+      text-decoration: none;
+      font-size: .82rem;
+    }
+    a.rating:hover,
+    a.rating:focus {
+      background: rgba(0,164,220,.25);
+    }
+    .rating-label {
+      color: rgba(255,255,255,.65);
+    }
+    .rating-value {
+      font-weight: 800;
+    }
+    .extra-section {
+      display: grid;
+      gap: .75rem;
+      margin-top: 1.5rem;
+    }
+    .extra-section h3 {
+      margin: 0;
+    }
+    .cast-row {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 6.5rem;
+      gap: .75rem;
+      overflow-x: auto;
+      padding-bottom: .4rem;
+    }
+    .cast-photo {
+      width: 100%;
+      aspect-ratio: 2 / 3;
+      object-fit: cover;
+      border-radius: .4rem;
+      background: rgba(255,255,255,.08);
+    }
+    .cast-photo-fallback {
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: rgba(255,255,255,.55);
+    }
+    .cast-name {
+      font-size: .82rem;
+      font-weight: 700;
+      margin-top: .35rem;
+      overflow-wrap: anywhere;
+    }
+    .cast-character {
+      font-size: .75rem;
+      color: rgba(255,255,255,.6);
+      overflow-wrap: anywhere;
+    }
+    .quota {
+      color: rgba(255,255,255,.78);
+    }
+    .request-line {
+      font-size: .78rem;
+      color: rgba(255,255,255,.6);
+    }
+    .request-line.problem {
+      color: #ff9b9b;
+    }
+    .action.secondary {
+      background: rgba(255,255,255,.12);
+      color: rgba(255,255,255,.9);
+    }
+    .report-form {
+      display: grid;
+      gap: .75rem;
+      max-width: 32rem;
+      padding: .9rem;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: .4rem;
+    }
+    .report-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .75rem;
+    }
+    .filter-field textarea {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: .35rem;
+      background: #242424;
+      color: rgba(255,255,255,.92);
+      padding: .55rem .65rem;
+      font: inherit;
+      resize: vertical;
+    }
+    .report-error {
+      color: #ff9b9b;
+      font-size: .88rem;
+    }
+    .report-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .5rem;
+    }
+    .status-note {
+      font-size: .85rem;
+      color: rgba(255,255,255,.65);
+      max-width: 32rem;
+    }
     .season-section {
       display: grid;
       gap: .75rem;
@@ -377,6 +527,7 @@
         <button id="detailBack" class="back detail-back" data-back="true" type="button" aria-label="Back to request results" hidden>&#8592;</button>
         <h1>Request</h1>
         <div class="meta" id="status">Search and discover media from Jellyseerr without leaving Jellyfin.</div>
+        <div class="meta quota" id="quota" role="status" hidden></div>
       </div>
       <div class="search-row">
         <input id="search" class="search" type="search" placeholder="Search movies and shows" autocomplete="off" spellcheck="false">
@@ -441,6 +592,6 @@
     <section id="results"></section>
     <div class="footer" id="footer"></div>
   </main>
-  <script src="/JellyseerrBridge/Assets/request-page.js?v=20260614-2305"></script>
+  <script src="/JellyseerrBridge/Assets/request-page.js?v=0.3.1.0"></script>
 </body>
 </html>

@@ -3,10 +3,10 @@ set -euo pipefail
 
 owner="${1:?owner/org is required}"
 repo="${2:-jellyfin-plugin-jellyseerr-bridge}"
-version="${3:-0.1.0.5}"
-tag="${4:-v0.1.5}"
+version="${3:-0.2.0.0}"
+tag="${4:-v0.2.0}"
 zip_path="${5:-dist/JellyseerrBridge_${version}.zip}"
-target_abi="${6:-10.11.0.0}"
+target_abi="${6:-12.0.0.0}"
 
 if [ ! -f "$zip_path" ]; then
   echo "Release zip not found: $zip_path" >&2
@@ -31,7 +31,7 @@ cat <<JSON
     "versions": [
       {
         "version": "${version}",
-        "changelog": "Simplifies setup around the standard plugin install plus one web-loader installer command.",
+        "changelog": "Adds support for Jellyfin 12.x (.NET 10). Use 0.1.0.5 for Jellyfin 10.11.x.",
         "targetAbi": "${target_abi}",
         "sourceUrl": "${source_url}",
         "checksum": "${checksum}",

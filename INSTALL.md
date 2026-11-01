@@ -7,8 +7,8 @@ This plugin has two install paths:
 
 ## Requirements
 
-- Jellyfin 10.11.x.
-- .NET SDK 9.0.x to build from source.
+- Jellyfin 12.x (12.0 through 12.4). For Jellyfin 10.11.x, use release 0.1.0.5.
+- .NET SDK 10.0.x to build from source.
 - A working Jellyseerr instance.
 - A Jellyseerr API key from Jellyseerr Settings.
 - Network access from the Jellyfin server to Jellyseerr.
@@ -53,14 +53,14 @@ dotnet build -c Release
 Create a plugin folder on the Jellyfin server:
 
 ```bash
-sudo mkdir -p /var/lib/jellyfin/plugins/JellyseerrBridge_0.1.0.5
+sudo mkdir -p /var/lib/jellyfin/plugins/JellyseerrBridge_0.2.0.0
 ```
 
 Copy the build output into that folder:
 
 ```bash
-sudo cp src/Jellyfin.Plugin.JellyseerrBridge/bin/Release/net9.0/* /var/lib/jellyfin/plugins/JellyseerrBridge_0.1.0.5/
-sudo chown -R jellyfin:jellyfin /var/lib/jellyfin/plugins/JellyseerrBridge_0.1.0.5
+sudo cp src/Jellyfin.Plugin.JellyseerrBridge/bin/Release/net10.0/* /var/lib/jellyfin/plugins/JellyseerrBridge_0.2.0.0/
+sudo chown -R jellyfin:jellyfin /var/lib/jellyfin/plugins/JellyseerrBridge_0.2.0.0
 ```
 
 Restart Jellyfin:
@@ -77,8 +77,10 @@ Open Jellyfin Dashboard -> Plugins -> Jellyseerr Bridge.
 
 Set:
 
-- `Jellyseerr Base URL`: the URL reachable from the Jellyfin server, such as `http://192.168.9.10:5055`.
+- `Jellyseerr Base URL`: the URL reachable from the Jellyfin server, such as `http://jellyseerr:5055`. On Docker, don't use `localhost`; see [CONFIGURATION.md](CONFIGURATION.md).
 - `Jellyseerr API Key`: from Jellyseerr Settings.
+
+Click Test Connection to check both before saving.
 - `Enable Request Submission`: enable this when you want users to submit requests.
 - `Enable 4K Requests`: optional.
 - `Allowed Jellyfin User IDs`: optional. Leave empty to allow any authenticated Jellyfin user to submit requests.
@@ -126,7 +128,7 @@ sudo systemctl stop jellyfin
 Remove the plugin folder:
 
 ```bash
-sudo rm -rf /var/lib/jellyfin/plugins/JellyseerrBridge_0.1.0.5
+sudo rm -rf /var/lib/jellyfin/plugins/JellyseerrBridge_0.2.0.0
 ```
 
 Remove the plugin configuration if you also want to delete saved settings:

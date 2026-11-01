@@ -1,23 +1,34 @@
 [
-    {
-        "name":  "Jellyseerr Bridge",
-        "owner":  "monjaka",
-        "description":  "A Jellyfin plugin that provides a Jellyseerr-powered request page with server-side API-key forwarding.",
-        "versions":  [
-                         {
-                             "url":  "https://github.com/monjaka/jellyfin-plugin-jellyseerr-bridge/releases/download/v0.1.5/JellyseerrBridge_0.1.0.5.zip",
-                             "checksum":  "eea7309b089ea102e54b31983418d104",
-                             "version":  "0.1.0.5",
-                             "repositoryUrl":  "https://raw.githubusercontent.com/monjaka/jellyfin-plugin-jellyseerr-bridge/main/manifest.json",
-                             "timestamp":  "2026-06-15T04:55:00Z",
-                             "sourceUrl":  "https://github.com/monjaka/jellyfin-plugin-jellyseerr-bridge/releases/download/v0.1.5/JellyseerrBridge_0.1.0.5.zip",
-                             "repositoryName":  "Jellyseerr Bridge",
-                             "targetAbi":  "10.11.0.0",
-                             "changelog":  "Simplifies setup around the standard plugin install plus one web-loader installer command."
-                         }
-                     ],
-        "category":  "General",
-        "overview":  "Search, discover, and request media from Jellyseerr inside Jellyfin.",
-        "guid":  "d2fcf9c8-c3c7-47e8-9dd6-8de9867e36bb"
-    }
+  {
+    "name": "Jellyseerr Bridge",
+    "owner": "monjaka",
+    "description": "A Jellyfin plugin that provides a Jellyseerr-powered request page with server-side API-key forwarding.",
+    "versions": [
+      {
+        "url": "https://github.com/monjaka/jellyfin-plugin-jellyseerr-bridge/releases/download/v0.2.0/JellyseerrBridge_0.2.0.0.zip",
+        "checksum": "REPLACE_WITH_RELEASE_ZIP_MD5",
+        "version": "0.2.0.0",
+        "repositoryUrl": "https://raw.githubusercontent.com/monjaka/jellyfin-plugin-jellyseerr-bridge/main/manifest.json",
+        "timestamp": "REPLACE_WITH_RELEASE_TIMESTAMP",
+        "sourceUrl": "https://github.com/monjaka/jellyfin-plugin-jellyseerr-bridge/releases/download/v0.2.0/JellyseerrBridge_0.2.0.0.zip",
+        "repositoryName": "Jellyseerr Bridge",
+        "targetAbi": "12.0.0.0",
+        "changelog": "Adds support for Jellyfin 12.x (.NET 10). Use 0.1.0.5 for Jellyfin 10.11.x."
+      },
+      {
+        "url": "https://github.com/monjaka/jellyfin-plugin-jellyseerr-bridge/releases/download/v0.1.5/JellyseerrBridge_0.1.0.5.zip",
+        "checksum": "eea7309b089ea102e54b31983418d104",
+        "version": "0.1.0.5",
+        "repositoryUrl": "https://raw.githubusercontent.com/monjaka/jellyfin-plugin-jellyseerr-bridge/main/manifest.json",
+        "timestamp": "2026-06-15T04:55:00Z",
+        "sourceUrl": "https://github.com/monjaka/jellyfin-plugin-jellyseerr-bridge/releases/download/v0.1.5/JellyseerrBridge_0.1.0.5.zip",
+        "repositoryName": "Jellyseerr Bridge",
+        "targetAbi": "10.11.0.0",
+        "changelog": "Simplifies setup around the standard plugin install plus one web-loader installer command."
+      }
+    ],
+    "category": "General",
+    "overview": "Search, discover, and request media from Jellyseerr inside Jellyfin.",
+    "guid": "d2fcf9c8-c3c7-47e8-9dd6-8de9867e36bb"
+  }
 ]
